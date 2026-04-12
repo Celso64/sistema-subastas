@@ -1,0 +1,37 @@
+package com.subasta.core.api;
+
+import com.subasta.core.Storage;
+import com.subasta.core.model.Comprador;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+@Service
+public class CompradorAPI {
+
+    private Storage<Comprador> compradorStorage;
+
+    public CompradorAPI(Storage<Comprador> compradorStorage) {
+        this.compradorStorage = compradorStorage;
+    }
+
+    public void agregarComprador(String nombre, byte[] logo){
+        Comprador nuevo = new Comprador(nombre, logo);
+        compradorStorage.save(nuevo);
+    }
+
+    public void modificarComprador(UUID idComprador, Optional<String> nombre, Optional<byte[]> logo){
+        compradorStorage.getById(idComprador).ifPresent(comprador -> {
+            nombre.ifPresent(comprador::setNombre);
+            logo.ifPresent(comprador::setLogo);
+            compradorStorage.save(comprador);
+        });
+    }
+
+    public List<Comprador> getCompradores(){
+        return compradorStorage.getAll();
+    }
+}
