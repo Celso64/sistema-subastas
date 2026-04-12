@@ -37,13 +37,14 @@ public class SubastaApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         addOferta();
+        addComprador();
     }
 
-    private void addC(){
-        compradorAPI.agregarComprador("Celso", new byte[1]);
-        compradorAPI.agregarComprador("Daniel", new byte[1]);
-        compradorAPI.agregarComprador("Eduardo", new byte[1]);
-        compradorAPI.agregarComprador("Leo", new byte[1]);
+    private void addComprador(){
+        compradorAPI.agregarComprador("Celso", new byte[1], "2934 654826");
+        compradorAPI.agregarComprador("Daniel", new byte[1], "2934 654826");
+        compradorAPI.agregarComprador("Eduardo", new byte[1], "2934 654826");
+        compradorAPI.agregarComprador("Leo", new byte[1], "2934 654826");
     }
 
     private void addOferta(){

@@ -1,6 +1,7 @@
 package com.subasta.ui;
 
 import com.subasta.ui.compra.view.CompraPanel;
+import com.subasta.ui.comprador.CompradorPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import java.awt.*;
 public class Ventana extends JFrame {
 
     @Autowired
-    public Ventana(CompraPanel compraPanel) throws HeadlessException {
+    public Ventana(CompraPanel compraPanel, CompradorPanel compradorPanel) throws HeadlessException {
         setTitle("Sistema Subasta");
         setSize(820, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -23,9 +24,8 @@ public class Ventana extends JFrame {
         tabbedPane.addTab("Compras", null, compraPanel,
                 "Lotes de cartas compradas.");
 
-        TabComprador tabComprador = new TabComprador();
-        tabComprador.setOpaque(true);
-        tabbedPane.addTab("Compradores", null, tabComprador,
+        compradorPanel.setOpaque(true);
+        tabbedPane.addTab("Compradores", null, compradorPanel,
                 "Compradores de cartas.");
 
         //Add the tabbed pane to this panel.

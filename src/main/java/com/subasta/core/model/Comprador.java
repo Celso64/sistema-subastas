@@ -13,16 +13,20 @@ public class Comprador implements Identificable {
 
     private byte[] logo;
 
-    public Comprador(UUID id, String nombre, byte[] logo) {
+    private String contacto;
+
+    public Comprador(UUID id, String nombre, byte[] logo, String contacto) {
         this.id = id;
         this.nombre = nombre;
         this.logo = logo;
+        this.contacto = contacto;
     }
 
-    public Comprador(String nombre, byte[] logo) {
+    public Comprador(String nombre, byte[] logo, String contacto) {
         this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.logo = logo;
+        this.contacto = contacto;
     }
 
     @Override
@@ -44,5 +48,9 @@ public class Comprador implements Identificable {
 
     public void setLogo(byte[] logo) {
         this.logo = logo;
+    }
+
+    public String getContacto() {
+        return contacto;
     }
 }

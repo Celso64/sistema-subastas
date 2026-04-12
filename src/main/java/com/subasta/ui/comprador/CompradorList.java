@@ -1,8 +1,9 @@
-package com.subasta.ui.compra.view;
+package com.subasta.ui.comprador;
 
-import com.subasta.core.api.CompraAPI;
-import com.subasta.core.model.Oferta;
+import com.subasta.core.api.CompradorAPI;
+import com.subasta.core.model.Comprador;
 import com.subasta.ui.compra.dto.OfertaShowDTO;
+import com.subasta.ui.comprador.dto.CompradorShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -13,21 +14,20 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 @Component
-public class CompraList extends JPanel {
+public class CompradorList extends JPanel {
 
     private final Integer TAM_FILA = 16;
-    private final CompraAPI compraAPI;
+    private final CompradorAPI compradorAPI;
     private final JButton btn;
     private final JTable table;
     private final String[] titulos;
 
     @Autowired
-    public CompraList(CompraAPI compraAPI) {
-
-        this.compraAPI = compraAPI;
+    public CompradorList(CompradorAPI compradorAPI) {
+        this.compradorAPI = compradorAPI;
         this.table = new JTable();
-        this.titulos = OfertaShowDTO.getTitles();
-        btn = new JButton("Agregar Compra");
+        this.titulos = CompradorShowDTO.getTitles();
+        btn = new JButton("Agregar Comprador");
 
         setLayout(new BorderLayout());
         loadTable();
@@ -43,15 +43,15 @@ public class CompraList extends JPanel {
     }
 
     @EventListener
-    public void handleUpdateEvent(Oferta oferta){
+    public void handleUpdateEvent(Comprador comprador){
         loadTable();
     }
 
     private void loadTable(){
-        var datos = compraAPI.listarOfertas()
+        var datos = compradorAPI.getCompradores()
                 .stream()
-                .map(OfertaShowDTO::fromModel)
-                .map(OfertaShowDTO::toArray)
+                .map(CompradorShowDTO::fromModel)
+                .map(CompradorShowDTO::toArray)
                 .toArray(Object[][]::new);
 
         DefaultTableModel model = new DefaultTableModel(datos, titulos);

@@ -2,9 +2,9 @@ package com.subasta.ui.compra.dto;
 
 import com.subasta.core.model.Oferta;
 
-public record OfertaDTO(String carta, String precio, String comprador, String contacto, String estado) {
+public record OfertaShowDTO(String carta, String precio, String comprador, String contacto, String estado) {
 
-    public static OfertaDTO fromModel(Oferta ofertaModel){
+    public static OfertaShowDTO fromModel(Oferta ofertaModel){
 
         String cartaNombre = ofertaModel.getNombre();
         String precioCarta = ofertaModel.getPrecio().toString();
@@ -12,7 +12,7 @@ public record OfertaDTO(String carta, String precio, String comprador, String co
         String contactoComprador = ofertaModel.getContacto();
         String estado = "PENDIENTE";
 
-       return new OfertaDTO(cartaNombre, precioCarta, compradorId, contactoComprador, estado);
+       return new OfertaShowDTO(cartaNombre, precioCarta, compradorId, contactoComprador, estado);
     }
 
     public Object[] toArray(){
