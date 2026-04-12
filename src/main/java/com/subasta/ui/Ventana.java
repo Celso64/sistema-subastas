@@ -1,7 +1,7 @@
 package com.subasta.ui;
 
 import com.subasta.ui.compra.view.CompraPanel;
-import com.subasta.ui.comprador.CompradorPanel;
+import com.subasta.ui.comprador.view.CompradorPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

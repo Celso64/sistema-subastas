@@ -1,5 +1,11 @@
 package com.subasta.ui.compra.view;
 
+import com.subasta.core.api.CompraAPI;
+import com.subasta.core.api.CompradorAPI;
+import com.subasta.core.model.Comprador;
+import com.subasta.ui.compra.event.OfertaCreate;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -7,7 +13,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.UUID;
+import java.util.*;
+import java.util.List;
 
 @Component
 public class CompraAdd extends JPanel {
@@ -18,8 +25,18 @@ public class CompraAdd extends JPanel {
     private JComboBox<String> comboCategoria;
     private JButton btnEnviar;
 
-    public CompraAdd() {
-//        setLayout(new FlowLayout());
+    private final ApplicationEventPublisher eventPublisher;
+
+    private final CompradorAPI compradorAPI;
+    private final CompraAPI compraAPI;
+    private Map<String, Comprador> compradores;
+
+    public CompraAdd(CompraAPI compraAPI, CompradorAPI compradorAPI, ApplicationEventPublisher applicationEventPublisher) {
+
+        this.compraAPI = compraAPI;
+        this.compradorAPI = compradorAPI;
+        this.eventPublisher = applicationEventPublisher;
+
         add(new JLabel("Formulario de Nueva Compra"));
         btn = new JButton("Volver a lista");
         add(btn);
@@ -31,11 +48,6 @@ public class CompraAdd extends JPanel {
         txtNombre = new JTextField();
         add(txtNombre);
 
-//        // 2. Campo UUID (Identificador)
-//        add(new JLabel("ID (UUID):"));
-//        txtID = new JTextField(UUID.randomUUID().toString()); // Sugerimos uno por defecto
-//        add(txtID);
-
         // 3. Campo Double (Precio)
         add(new JLabel("Precio:"));
         txtPrecio = new JTextField();
@@ -43,8 +55,11 @@ public class CompraAdd extends JPanel {
 
         // 4. ComboBox (Categoría)
         add(new JLabel("Comprador:"));
-        String[] opciones = {"Electrónica", "Hogar", "Libros"};
-        comboCategoria = new JComboBox<>(opciones);
+//        String[] opciones = compradores.keySet().toArray(new String[0]);
+//        comboCategoria = new JComboBox<>(opciones);
+
+        comboCategoria = new JComboBox<>();
+        loadCombobox();
         add(comboCategoria);
 
         // 5. Botón de acción
@@ -57,6 +72,7 @@ public class CompraAdd extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 procesarDatos();
+                eventPublisher.publishEvent(new OfertaCreate());
             }
         });
     }
@@ -65,19 +81,24 @@ public class CompraAdd extends JPanel {
         btn.addActionListener(listener);
     }
 
+    @EventListener
+    public void handleUpdateEvent(Comprador comprador){
+        loadCombobox();
+    }
+
     private void procesarDatos() {
         try {
             // Conversión a String
             String nombre = txtNombre.getText();
-
-//            // Conversión a UUID
-//            UUID id = UUID.fromString(txtID.getText().trim());
 
             // Conversión a Double
             double precio = Double.parseDouble(txtPrecio.getText().trim());
 
             // Obtener valor del ComboBox
             String categoria = (String) comboCategoria.getSelectedItem();
+            Comprador c = compradores.get(categoria);
+
+            compraAPI.agregarCompra(nombre, c.getId().toString(), precio, c.getContacto());
 
             // Mostrar resultado
             String mensaje = String.format("Datos guardados:\nNombre: %s\nPrecio: %.2f\nCategoría: %s",
@@ -89,4 +110,24 @@ public class CompraAdd extends JPanel {
             JOptionPane.showMessageDialog(this, "Error: Verifique el formato de UUID o del Precio.", "Error de conversión", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private void loadCombobox(){
+        var listaCompradores = compradorAPI.getCompradores();
+        compradores = new HashMap<>();
+
+        for (Comprador c: listaCompradores){
+            compradores.put(c.getNombre(), c);
+        }
+
+        List<String> claves = compradores.keySet().stream().toList();
+
+        String[] opciones = new String[claves.size()];
+
+        for(int i= 0; i<claves.size(); i++){
+            opciones[i] = claves.get(i);
+        }
+        comboCategoria.setModel(new DefaultComboBoxModel<>(opciones));
+    }
+
+
 }

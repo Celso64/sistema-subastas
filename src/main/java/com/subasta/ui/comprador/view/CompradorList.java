@@ -1,8 +1,7 @@
-package com.subasta.ui.comprador;
+package com.subasta.ui.comprador.view;
 
 import com.subasta.core.api.CompradorAPI;
 import com.subasta.core.model.Comprador;
-import com.subasta.ui.compra.dto.OfertaShowDTO;
 import com.subasta.ui.comprador.dto.CompradorShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

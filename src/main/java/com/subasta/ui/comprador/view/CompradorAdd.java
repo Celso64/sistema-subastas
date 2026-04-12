@@ -1,5 +1,8 @@
-package com.subasta.ui.comprador;
+package com.subasta.ui.comprador.view;
 
+import com.subasta.core.api.CompradorAPI;
+import com.subasta.ui.comprador.event.CompradorCreate;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -11,32 +14,32 @@ import java.awt.event.ActionListener;
 public class CompradorAdd extends JPanel {
     private JButton btn;
     private JTextField txtNombre;
-    private JTextField txtPrecio;
-    private JComboBox<String> comboCategoria;
+    private JTextField txtContacto;
     private JButton btnEnviar;
 
-    public CompradorAdd() {
+    private final CompradorAPI compradorAPI;
+
+    private ApplicationEventPublisher eventPublisher;
+
+    public CompradorAdd(CompradorAPI compradorAPI, ApplicationEventPublisher applicationEventPublisher) {
+
+        this.compradorAPI = compradorAPI;
+        this.eventPublisher = applicationEventPublisher;
+
         add(new JLabel("Formulario de Nueva Compra"));
         btn = new JButton("Volver a lista");
         add(btn);
 
         setLayout(new GridLayout(7, 2, 10, 10)); // 5 filas, 2 columnas
 
-        // 1. Campo String (Nombre)
-        add(new JLabel("Nombre de Carta:"));
+        add(new JLabel("Nombre de Comprador:"));
         txtNombre = new JTextField();
         add(txtNombre);
 
-        // 3. Campo Double (Precio)
-        add(new JLabel("Precio:"));
-        txtPrecio = new JTextField();
-        add(txtPrecio);
+        add(new JLabel("Numero de contacto:"));
+        txtContacto = new JTextField();
+        add(txtContacto);
 
-        // 4. ComboBox (Categoría)
-        add(new JLabel("Comprador:"));
-        String[] opciones = {"Electrónica", "Hogar", "Libros"};
-        comboCategoria = new JComboBox<>(opciones);
-        add(comboCategoria);
 
         // 5. Botón de acción
         btnEnviar = new JButton("Guardar Compra");
@@ -48,6 +51,7 @@ public class CompradorAdd extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 procesarDatos();
+                eventPublisher.publishEvent(new CompradorCreate());
             }
         });
     }
@@ -58,18 +62,14 @@ public class CompradorAdd extends JPanel {
 
         private void procesarDatos() {
             try {
-                // Conversión a String
                 String nombre = txtNombre.getText();
+                String contacto = txtContacto.getText();
 
-                // Conversión a Double
-                double precio = Double.parseDouble(txtPrecio.getText().trim());
-
-                // Obtener valor del ComboBox
-                String categoria = (String) comboCategoria.getSelectedItem();
+                compradorAPI.agregarComprador(nombre, new byte[0], contacto);
 
                 // Mostrar resultado
-                String mensaje = String.format("Datos guardados:\nNombre: %s\nPrecio: %.2f\nCategoría: %s",
-                        nombre, precio, categoria);
+                String mensaje = String.format("Datos guardados:\nNombre: %s\nContacto: %s",
+                        nombre, contacto);
 
                 JOptionPane.showMessageDialog(this, mensaje);
 
