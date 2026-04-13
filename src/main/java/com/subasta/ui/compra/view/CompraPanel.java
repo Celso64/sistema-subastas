@@ -22,7 +22,13 @@ public class CompraPanel extends JPanel {
         add(compraList, Vista.LISTAR.toString());
         add(compraAdd, Vista.AGREGAR.toString());
 
-        compraList.alPresionarAgregar(e -> cardLayout.show(this, Vista.AGREGAR.toString()));
+        compraList.alPresionarAgregar(e -> {
+            if (compraAdd.getSinCompradores()){
+                JOptionPane.showMessageDialog(this, "No hay compradores creados.", "Error", JOptionPane.ERROR_MESSAGE);
+            }else{
+                cardLayout.show(this, Vista.AGREGAR.toString());
+            }
+        });
         compraAdd.alPresionarCancelar(e -> cardLayout.show(this, Vista.LISTAR.toString()));
     }
 

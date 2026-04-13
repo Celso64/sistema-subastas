@@ -26,7 +26,7 @@ public class CompradorAdd extends JPanel {
         this.compradorAPI = compradorAPI;
         this.eventPublisher = applicationEventPublisher;
 
-        add(new JLabel("Formulario de Nueva Compra"));
+        add(new JLabel("Formulario de Nuevo Comprador"));
         btn = new JButton("Volver a lista");
         add(btn);
 
@@ -42,7 +42,7 @@ public class CompradorAdd extends JPanel {
 
 
         // 5. Botón de acción
-        btnEnviar = new JButton("Guardar Compra");
+        btnEnviar = new JButton("Guardar Comprador");
         add(new JLabel("")); // Espacio vacío
         add(btnEnviar);
 

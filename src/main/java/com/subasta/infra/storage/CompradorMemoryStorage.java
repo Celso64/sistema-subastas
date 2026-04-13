@@ -3,11 +3,13 @@ package com.subasta.infra.storage;
 import com.google.gson.Gson;
 import com.subasta.core.Storage;
 import com.subasta.core.model.Comprador;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
+@Primary
 public class CompradorMemoryStorage implements Storage<Comprador> {
 
     private Gson converter;

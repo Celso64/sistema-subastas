@@ -2,9 +2,13 @@ package com.subasta.core.model;
 
 import com.subasta.core.Identificable;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class Oferta implements Identificable {
+
+    private static final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private UUID id;
 
@@ -16,12 +20,15 @@ public class Oferta implements Identificable {
 
     private String contacto;
 
+    private String creada;
+
     public Oferta(String nombre, UUID idComprador, Double precio, String contacto) {
         this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.idComprador = idComprador;
         this.precio = precio;
         this.contacto = contacto;
+        this.creada = LocalDate.now().format(formato);
     }
 
     public Oferta(UUID id, String nombre, UUID idComprador, Double precio, String contacto) {
@@ -30,6 +37,7 @@ public class Oferta implements Identificable {
         this.idComprador = idComprador;
         this.precio = precio;
         this.contacto = contacto;
+        this.creada = LocalDate.now().format(formato);
     }
 
     @Override
@@ -51,5 +59,9 @@ public class Oferta implements Identificable {
 
     public String getContacto() {
         return contacto;
+    }
+
+    public String getCreada() {
+        return creada;
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,9 +29,9 @@ public class CompraAdd extends JPanel {
     private final CompradorAPI compradorAPI;
     private final CompraAPI compraAPI;
     private Map<String, Comprador> compradores;
+    private Boolean sinCompradores = true;
 
     public CompraAdd(CompraAPI compraAPI, CompradorAPI compradorAPI, ApplicationEventPublisher applicationEventPublisher) {
-
         this.compraAPI = compraAPI;
         this.compradorAPI = compradorAPI;
         this.eventPublisher = applicationEventPublisher;
@@ -83,6 +82,7 @@ public class CompraAdd extends JPanel {
 
     @EventListener
     public void handleUpdateEvent(Comprador comprador){
+        sinCompradores = false;
         loadCombobox();
     }
 
@@ -109,6 +109,10 @@ public class CompraAdd extends JPanel {
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, "Error: Verifique el formato de UUID o del Precio.", "Error de conversión", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public Boolean getSinCompradores() {
+        return sinCompradores;
     }
 
     private void loadCombobox(){

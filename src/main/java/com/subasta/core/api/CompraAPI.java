@@ -21,8 +21,8 @@ public class CompraAPI {
         this.eventPublisher = applicationEventPublisher;
     }
 
-    public void agregarCompra(String nombre, String id, Double precio, String contacto){
-        Oferta nuevaOferta = new Oferta(nombre, UUID.fromString(id), precio, contacto);
+    public void agregarCompra(String nombre, String idComprador, Double precio, String contacto){
+        Oferta nuevaOferta = new Oferta(nombre, UUID.fromString(idComprador), precio, contacto);
         ofertaStorage.save(nuevaOferta);
         eventPublisher.publishEvent(nuevaOferta);
     }

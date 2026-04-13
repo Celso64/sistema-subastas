@@ -3,3 +3,6 @@ spring:
     name: subasta
   main:
     web-application-type: none
+  storage:
+    base-path: data/
+    img_path: data/img/

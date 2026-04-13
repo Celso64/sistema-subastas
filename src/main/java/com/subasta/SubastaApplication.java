@@ -36,8 +36,8 @@ public class SubastaApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        addOferta();
-        addComprador();
+//        addOferta();
+//        addComprador();
     }
 
     private void addComprador(){
