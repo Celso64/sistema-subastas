@@ -1,63 +1,50 @@
 package com.subasta;
 
-import com.subasta.core.api.CompraAPI;
-import com.subasta.core.api.CompradorAPI;
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.subasta.ui.Ventana;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.UUID;
 
 @Slf4j
 @SpringBootApplication
-public class SubastaApplication implements CommandLineRunner {
+public class SubastaApplication{
 
-    private CompradorAPI compradorAPI;
-    private CompraAPI compraAPI;
+    public static void main(String[] args) throws UnsupportedLookAndFeelException {
+        checkOrGenerateFolders();
+        var context = buildContext(args);
+        setTheme(new FlatDarculaLaf());
+        createWindow(context);
+	}
 
-    public SubastaApplication(CompradorAPI compradorAPI, CompraAPI compraAPI) {
-        this.compradorAPI = compradorAPI;
-        this.compraAPI = compraAPI;
-    }
-
-    public static void main(String[] args) {
-
+    private static void checkOrGenerateFolders(){
         File folder = new File("./data/img/");
         if (!folder.exists()) {
             if(folder.mkdirs()){
                 log.info("Directorios \"data/\" \"data/img/\" creados.");
             }
         }
+    }
 
-        ConfigurableApplicationContext context = new SpringApplicationBuilder(SubastaApplication.class)
+    private static ConfigurableApplicationContext buildContext(String[] args){
+        return new SpringApplicationBuilder(SubastaApplication.class)
                 .headless(false)
                 .run(args);
+    }
+    private static void setTheme(LookAndFeel tema) throws UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(tema);
+    }
 
+    private static void createWindow(ConfigurableApplicationContext context){
         EventQueue.invokeLater(() -> {
             Ventana frame = context.getBean(Ventana.class);
             frame.setVisible(true);
         });
-	}
-
-    @Override
-    public void run(String... args) throws Exception {
-//        addOferta();
-//        addComprador();
-    }
-
-    private void addComprador(){
-        compradorAPI.agregarComprador("Celso", new byte[1], "2934 654826");
-        compradorAPI.agregarComprador("Daniel", new byte[1], "2934 654826");
-        compradorAPI.agregarComprador("Eduardo", new byte[1], "2934 654826");
-        compradorAPI.agregarComprador("Leo", new byte[1], "2934 654826");
-    }
-
-    private void addOferta(){
-        compraAPI.agregarCompra("Pikachu", UUID.randomUUID().toString(), 1000.0, "2934 465657");
     }
 }

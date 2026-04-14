@@ -54,7 +54,12 @@ public class CompraList extends JPanel {
                 .map(OfertaShowDTO::toArray)
                 .toArray(Object[][]::new);
 
-        DefaultTableModel model = new DefaultTableModel(datos, titulos);
+        DefaultTableModel model = new DefaultTableModel(datos, titulos){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setModel(model);
         Integer cantidadFilas = datos.length;
         table.setPreferredScrollableViewportSize(new Dimension(800, TAM_FILA*cantidadFilas));

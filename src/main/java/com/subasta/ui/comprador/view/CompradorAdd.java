@@ -2,6 +2,9 @@ package com.subasta.ui.comprador.view;
 
 import com.subasta.core.api.CompradorAPI;
 import com.subasta.ui.comprador.event.CompradorCreate;
+import com.subasta.ui.share.util.Icon;
+import com.subasta.ui.share.util.FindIcon;
+import com.subasta.ui.share.util.ScaleIcon;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -26,25 +29,45 @@ public class CompradorAdd extends JPanel {
         this.compradorAPI = compradorAPI;
         this.eventPublisher = applicationEventPublisher;
 
+        var layout = new GridBagLayout();
+        var layoutConstrains = new GridBagConstraints();
+
+        layoutConstrains.insets = new Insets(100, 0, 100, 0);
+        layoutConstrains.fill = GridBagConstraints.BOTH;
+        layoutConstrains.weightx = 1.0;
+        layoutConstrains.weighty = 1.0;
+
+        layout.setConstraints(this, layoutConstrains);
+
+        setLayout(layout);
+
+        JPanel panel = new JPanel(new GridLayout(3, 2, 0, 24));
+        panel.setVisible(true);
+
         add(new JLabel("Formulario de Nuevo Comprador"));
-        btn = new JButton("Volver a lista");
-        add(btn);
+        add(panel);
 
-        setLayout(new GridLayout(7, 2, 10, 10)); // 5 filas, 2 columnas
 
-        add(new JLabel("Nombre de Comprador:"));
+
+//        panel.add(new JLabel(""));
+
+
+        panel.add(new JLabel("Nombre de Comprador:"));
         txtNombre = new JTextField();
-        add(txtNombre);
+        panel.add(txtNombre);
 
-        add(new JLabel("Numero de contacto:"));
+        panel.add(new JLabel("Numero de contacto:"));
         txtContacto = new JTextField();
-        add(txtContacto);
+        panel.add(txtContacto);
 
+        btn = new JButton("Volver a lista");
+        FindIcon.getIcon(Icon.ATRAS).ifPresent(imageIcon -> btn.setIcon(ScaleIcon.scale(imageIcon, ScaleIcon.ICONO_SMALL, ScaleIcon.ICONO_SMALL)));
+        panel.add(btn);
 
         // 5. Botón de acción
         btnEnviar = new JButton("Guardar Comprador");
-        add(new JLabel("")); // Espacio vacío
-        add(btnEnviar);
+        FindIcon.getIcon(Icon.GUARDAR).ifPresent(imageIcon -> btnEnviar.setIcon(ScaleIcon.scale(imageIcon, ScaleIcon.ICONO_SMALL, ScaleIcon.ICONO_SMALL)));
+        panel.add(btnEnviar);
 
         // Evento del botón
         btnEnviar.addActionListener(new ActionListener() {

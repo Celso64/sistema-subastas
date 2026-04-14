@@ -4,6 +4,9 @@ import com.subasta.core.api.CompraAPI;
 import com.subasta.core.api.CompradorAPI;
 import com.subasta.core.model.Comprador;
 import com.subasta.ui.compra.event.OfertaCreate;
+import com.subasta.ui.share.util.FindIcon;
+import com.subasta.ui.share.util.Icon;
+import com.subasta.ui.share.util.ScaleIcon;
 import lombok.Getter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -42,35 +45,51 @@ public class CompraAdd extends JPanel {
             sinCompradores = false;
         }
 
-        add(new JLabel("Formulario de Nueva Compra"));
-        btn = new JButton("Volver a lista");
-        add(btn);
+        var layout = new GridBagLayout();
+        var layoutConstrains = new GridBagConstraints();
 
-        setLayout(new GridLayout(7, 2, 10, 10)); // 5 filas, 2 columnas
+        layoutConstrains.insets = new Insets(100, 0, 100, 0);
+        layoutConstrains.fill = GridBagConstraints.BOTH;
+        layoutConstrains.weightx = 1.0;
+        layoutConstrains.weighty = 1.0;
+
+        layout.setConstraints(this, layoutConstrains);
+
+        setLayout(layout);
+
+        JPanel panel = new JPanel(new GridLayout(9, 2, 0, 24));
+        panel.setVisible(true);
+        add(panel);
+
+        panel.add(new JLabel("Formulario de Nueva Compra"));
+        btn = new JButton("Volver a lista");
+        FindIcon.getIcon(Icon.ATRAS).ifPresent(imageIcon -> btn.setIcon(ScaleIcon.scale(imageIcon, ScaleIcon.ICONO_SMALL, ScaleIcon.ICONO_SMALL)));
+        panel.add(btn);
 
         // 1. Campo String (Nombre)
-        add(new JLabel("Nombre de Carta:"));
+        panel.add(new JLabel("Nombre de Carta:"));
         txtNombre = new JTextField();
-        add(txtNombre);
+        panel.add(txtNombre);
 
         // 3. Campo Double (Precio)
-        add(new JLabel("Precio:"));
+        panel.add(new JLabel("Precio:"));
         txtPrecio = new JTextField();
-        add(txtPrecio);
+        panel.add(txtPrecio);
 
         // 4. ComboBox (Categoría)
-        add(new JLabel("Comprador:"));
+        panel.add(new JLabel("Comprador:"));
 //        String[] opciones = compradores.keySet().toArray(new String[0]);
 //        comboCategoria = new JComboBox<>(opciones);
 
         comboCategoria = new JComboBox<>();
         loadCombobox();
-        add(comboCategoria);
+        panel.add(comboCategoria);
 
         // 5. Botón de acción
         btnEnviar = new JButton("Guardar Compra");
-        add(new JLabel("")); // Espacio vacío
-        add(btnEnviar);
+        FindIcon.getIcon(Icon.GUARDAR).ifPresent(imageIcon -> btnEnviar.setIcon(ScaleIcon.scale(imageIcon, ScaleIcon.ICONO_SMALL, ScaleIcon.ICONO_SMALL)));
+        panel.add(new JLabel("")); // Espacio vacío
+        panel.add(btnEnviar);
 
         // Evento del botón
         btnEnviar.addActionListener(new ActionListener() {
@@ -113,7 +132,7 @@ public class CompraAdd extends JPanel {
             JOptionPane.showMessageDialog(this, mensaje);
 
         } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, "Error: Verifique el formato de UUID o del Precio.", "Error de conversión", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Campos incompletos o erroneos.", "Error de conversión", JOptionPane.ERROR_MESSAGE);
         }
     }
 
