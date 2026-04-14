@@ -4,6 +4,7 @@ import com.subasta.core.api.CompraAPI;
 import com.subasta.core.api.CompradorAPI;
 import com.subasta.core.model.Comprador;
 import com.subasta.ui.compra.event.OfertaCreate;
+import lombok.Getter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -29,12 +30,17 @@ public class CompraAdd extends JPanel {
     private final CompradorAPI compradorAPI;
     private final CompraAPI compraAPI;
     private Map<String, Comprador> compradores;
+    @Getter
     private Boolean sinCompradores = true;
 
     public CompraAdd(CompraAPI compraAPI, CompradorAPI compradorAPI, ApplicationEventPublisher applicationEventPublisher) {
         this.compraAPI = compraAPI;
         this.compradorAPI = compradorAPI;
         this.eventPublisher = applicationEventPublisher;
+
+        if(compradorAPI.hayCompradores()){
+            sinCompradores = false;
+        }
 
         add(new JLabel("Formulario de Nueva Compra"));
         btn = new JButton("Volver a lista");
@@ -109,10 +115,6 @@ public class CompraAdd extends JPanel {
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, "Error: Verifique el formato de UUID o del Precio.", "Error de conversión", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public Boolean getSinCompradores() {
-        return sinCompradores;
     }
 
     private void loadCombobox(){

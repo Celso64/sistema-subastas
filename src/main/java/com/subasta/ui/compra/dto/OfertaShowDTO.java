@@ -12,7 +12,7 @@ public record OfertaShowDTO(String carta, String precio, String comprador, Strin
 
         String cartaNombre = ofertaModel.getNombre();
         String precioCarta = ofertaModel.getPrecio().toString();
-        String compradorId = ofertaModel.getIdComprador().toString();
+        String compradorId = ofertaModel.getNombreComprador();
         String contactoComprador = ofertaModel.getContacto();
         String creacion = ofertaModel.getCreada();
         String estado = "PENDIENTE";

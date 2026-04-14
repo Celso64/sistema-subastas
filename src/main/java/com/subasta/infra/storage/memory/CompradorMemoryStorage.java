@@ -1,4 +1,4 @@
-package com.subasta.infra.storage;
+package com.subasta.infra.storage.memory;
 
 import com.google.gson.Gson;
 import com.subasta.core.Storage;
@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
-@Primary
 public class CompradorMemoryStorage implements Storage<Comprador> {
 
     private Gson converter;
@@ -38,5 +36,10 @@ public class CompradorMemoryStorage implements Storage<Comprador> {
     @Override
     public List<Comprador> getAll() {
         return storage.values().stream().toList();
+    }
+
+    @Override
+    public Boolean hayRegistros() {
+        return !storage.isEmpty();
     }
 }

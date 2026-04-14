@@ -14,4 +14,6 @@ public interface Storage<T extends Identificable> {
     Optional<T> getById(UUID id);
 
     List<T> getAll();
+
+    Boolean hayRegistros();
 }

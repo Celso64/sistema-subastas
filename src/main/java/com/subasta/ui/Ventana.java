@@ -17,8 +17,10 @@ public class Ventana extends JFrame {
         setSize(820, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+        setLocationRelativeTo(null);
 
         JTabbedPane tabbedPane = new JTabbedPane();
+        MenuBar menu = new MenuBar();
 
         compraPanel.setOpaque(true);
         tabbedPane.addTab("Compras", null, compraPanel,
@@ -33,6 +35,8 @@ public class Ventana extends JFrame {
 
         //The following line enables to use scrolling tabs.
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        setJMenuBar(menu);
 
     }
 

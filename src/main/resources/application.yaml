@@ -4,5 +4,14 @@ spring:
   main:
     web-application-type: none
   storage:
-    base-path: data/
-    img_path: data/img/
+    path:
+      base: ./data/
+      img: ./data/img/
+    driver-db: org.sqlite.JDBC
+  datasource:
+    url: jdbc:sqlite:./data/midb.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate.ddl-auto: update
+    show-sql: false
